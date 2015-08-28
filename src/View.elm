@@ -94,6 +94,8 @@ player {x, y} =
     [ cx (toString x)
     , cy (toString y)
     , r (toString Size.player)
+    , stroke "white"
+    , strokeWidth "2"
     , fill Color.player
     ]
     []
