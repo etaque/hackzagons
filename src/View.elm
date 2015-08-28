@@ -50,7 +50,7 @@ hexagon : Position -> Svg
 hexagon position =
   let hexagonPoints = toSvgPoints (corners position)
   in  polygon
-        [ fill Color.hexagon
+        [ fill Color.sand
         , points hexagonPoints
         ]
         []
