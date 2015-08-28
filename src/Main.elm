@@ -12,6 +12,6 @@ main = leftAligned title
 title : Text
 title =
   T.fromString "Hackzagons"
-    |> T.color C.orange
+    |> T.color C.blue
     |> T.height 40
     |> T.bold

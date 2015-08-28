@@ -1,0 +1,12 @@
+{
+  "name": "Hackzagons",
+
+  "devDependencies": {
+    "watch": "0.16.0"
+  },
+
+  "scripts": {
+    "build": "elm make src/Main.elm --output main.js",
+    "watch": "watch 'npm run build' src"
+  }
+}
