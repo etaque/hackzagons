@@ -16,7 +16,7 @@ npm run watch
 
 ## TODO
 
-- [ ] rajouter des hexagones dans le modèle initial
+- [x] rajouter des hexagones dans le modèle initial
 - [ ] faire un rendu simple
 - [ ] rajouter la représentation de la position courante du joueur
 - [ ] pouvoir déplacer le jouer avec les flèches
