@@ -1,6 +1,6 @@
 # Hackzagons
 
-Generate a map with hexagonals blocks with collision detection.
+Generate a map with hexagonals blocks and collision detection.
 
 # Resources
 
