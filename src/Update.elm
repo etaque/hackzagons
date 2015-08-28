@@ -1,9 +1,11 @@
 module Update where
 
 import Inputs exposing (..)
+
 import Model exposing (..)
 import Model.Position exposing (..)
 
+import Constant.Size as Size
 
 update : Input -> Map -> Map
 update {arrows,dims} map =
@@ -14,6 +16,6 @@ update {arrows,dims} map =
 
 updatePosition : Arrows -> Position -> Position
 updatePosition a p =
-  { x = p.x + 2 * (toFloat a.x)
-  , y = p.y - 2 * (toFloat a.y)
+  { x = clamp Size.playerRadius (Size.boardWidth - Size.playerRadius) (p.x + 2 * (toFloat a.x))
+  , y = clamp Size.playerRadius (Size.boardHeight - Size.playerRadius) (p.y - 2 * (toFloat a.y))
   }
