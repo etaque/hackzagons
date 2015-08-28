@@ -5,6 +5,8 @@ module View
 import Html exposing (Html)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
+import List
+import String
 
 import Constant.Size as Size
 import Constant.Color as Color
@@ -21,6 +23,7 @@ board map =
     ]
     [ background
     , title
+    , hexagon
     ]
 
 background : Svg
@@ -41,3 +44,15 @@ title =
     , fontSize (toString Size.title)
     ]
     [ text "Hackzagons" ]
+
+hexagon : Svg
+hexagon =
+  let hexagonPoints =
+        corners { x = 300, y = 200 } 80
+          |> List.map (\{x, y} -> (toString x) ++ "," ++ (toString y))
+          |> String.join " "
+  in  polygon
+        [ fill Color.hexagon
+        , points hexagonPoints
+        ]
+        []
