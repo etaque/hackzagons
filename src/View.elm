@@ -25,9 +25,9 @@ board map =
     (  [ appDefs
        , background
        , title
-       , player map.position
        ]
     ++ hexagons map
+    ++ [ player map.position ]
     )
 
 appDefs : Svg
