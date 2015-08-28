@@ -2,6 +2,10 @@
 
 Generate a map with hexagonals blocks with collision detection.
 
+# Resources
+
+ * http://www.redblobgames.com/grids/hexagons/
+
 ## Usage
 
 ```
