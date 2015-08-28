@@ -6,10 +6,12 @@ import Html exposing (Html)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 
-import Model exposing (..)
-
 import Constant.Size as Size
 import Constant.Color as Color
+
+import Model exposing (..)
+
+import View.Hexagon exposing (..)
 
 board : Map -> Html
 board map =
