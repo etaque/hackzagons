@@ -2,16 +2,38 @@ module Main
   ( main
   ) where
 
-import Graphics.Element exposing (..)
-import Text as T exposing (Text)
-import Color as C
+import Html exposing (Html)
+import Svg exposing (..)
+import Svg.Attributes exposing (..)
 
-main : Element
-main = leftAligned title
+import Constant.Size as Size
+import Constant.Color as Color
 
-title : Text
+main : Html
+main =
+  svg
+    [ width (toString Size.boardWidth)
+    , height (toString Size.boardHeight)
+    ]
+    [ background
+    , title
+    ]
+
+background : Svg
+background =
+  rect
+    [ width (toString Size.boardWidth)
+    , height (toString Size.boardHeight)
+    , fill Color.background
+    ]
+    []
+
+title : Svg
 title =
-  T.fromString "Hackzagons"
-    |> T.color C.blue
-    |> T.height 40
-    |> T.bold
+  text'
+    [ x "5"
+    , y (toString (Size.title + 5))
+    , fill Color.title
+    , fontSize (toString Size.title)
+    ]
+    [ text "Hackzagons" ]
