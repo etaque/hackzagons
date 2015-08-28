@@ -12,6 +12,7 @@ import Constant.Size as Size
 import Constant.Color as Color
 
 import Model exposing (..)
+import Model.Position exposing (..)
 
 import View.Hexagon exposing (..)
 
@@ -23,7 +24,7 @@ board map =
     ]
     [ background
     , title
-    , hexagon
+    , hexagon { x = 300, y = 200 }
     ]
 
 background : Svg
@@ -45,12 +46,9 @@ title =
     ]
     [ text "Hackzagons" ]
 
-hexagon : Svg
-hexagon =
-  let hexagonPoints =
-        corners { x = 300, y = 200 } 80
-          |> List.map (\{x, y} -> (toString x) ++ "," ++ (toString y))
-          |> String.join " "
+hexagon : Position -> Svg
+hexagon position =
+  let hexagonPoints = toSvgPoints (corners position)
   in  polygon
         [ fill Color.hexagon
         , points hexagonPoints

@@ -1,17 +1,27 @@
 module View.Hexagon
-  ( corners
+  ( corners, toSvgPoints
   ) where
 
 import List
+import String
+
+import Constant.Size exposing (hexagonSize)
 
 import Model.Position exposing (..)
 
-corners : Position -> Float -> List Position
-corners center size = List.map (corner center size) [0..5]
+corners : Position -> List Position
+corners center =
+  List.map (corner center) [0..5]
 
-corner : Position -> Float -> Int -> Position
-corner center size i =
+corner : Position -> Int -> Position
+corner center i =
   let angle = degrees (toFloat (60 * i))
-  in  { x = center.x + size * (cos angle)
-      , y = center.y + size * (sin angle)
+  in  { x = center.x + hexagonSize * (cos angle)
+      , y = center.y + hexagonSize * (sin angle)
       }
+
+toSvgPoints : List Position -> String
+toSvgPoints points =
+  points
+    |> List.map (\{x, y} -> (toString x) ++ "," ++ (toString y))
+    |> String.join " "
