@@ -19,11 +19,10 @@ import View.Hexagon exposing (..)
 board : Map -> Html
 board map =
   svg
-    [ width (toString Size.boardWidth)
-    , height (toString Size.boardHeight)
+    [ width "100%"
+    , height "100%"
     ]
     (  [ appDefs
-       , background
        , title
        ]
     ++ hexagons map
@@ -51,11 +50,11 @@ tilePattern pid w h url =
     ]
 
 
-background : Svg
-background =
+background : (Int,Int) -> Svg
+background (w,h) =
   rect
-    [ width (toString Size.boardWidth)
-    , height (toString Size.boardHeight)
+    [ width (toString w)
+    , height (toString h)
     , fill Color.background
     ]
     []
@@ -72,7 +71,7 @@ title =
 
 hexagons : Map -> List Svg
 hexagons map =
-  let pos = { x = Size.boardWidth / 2, y = Size.boardHeight / 2 }
+  let pos = { x = (fst map.dims |> toFloat) / 2, y = (snd map.dims |> toFloat) / 2 }
   in  List.map (\tile -> hexagon tile.kind (getNeighbor pos tile.coords)) map.tiles
 
 hexagon : TileKind -> Position -> Svg

@@ -12,11 +12,12 @@ import Update exposing (update)
 
 import View exposing (board)
 
-input : Signal Arrows
-input = Signal.sampleOn (fps 60) arrows
+
+sampledInput : Signal Input
+sampledInput = Signal.sampleOn (fps 60) input
 
 mapState : Signal Map
-mapState = Signal.foldp update initialMap input
+mapState = Signal.foldp update initialMap sampledInput
 
 main : Signal Html
 main = Signal.map board mapState

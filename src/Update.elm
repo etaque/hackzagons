@@ -1,16 +1,16 @@
 module Update where
 
-import Inputs exposing (Arrows)
+import Inputs exposing (..)
 import Model exposing (..)
 import Model.Position exposing (..)
 
 
-update : Arrows -> Map -> Map
-update arrows map =
+update : Input -> Map -> Map
+update {arrows,dims} map =
   let
     newPosition = updatePosition arrows map.position
   in
-    { map | position <- newPosition }
+    { map | position <- newPosition, dims <- dims }
 
 updatePosition : Arrows -> Position -> Position
 updatePosition a p =

@@ -10,6 +10,7 @@ import Model.Coords exposing (..)
 
 type alias Map =
   { position : Position
+  , dims : (Int, Int)
   , tiles : List Tile
   }
 
@@ -26,6 +27,7 @@ initialMap =
       { x = 300.0
       , y = 250.0
       }
+  , dims = (800, 600)
   , tiles =
       [ sandTile { x =  0, y =  0 }
       , sandTile { x = -1, y =  0 }
