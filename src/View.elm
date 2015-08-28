@@ -6,11 +6,13 @@ import Html exposing (Html)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 
+import Model exposing (..)
+
 import Constant.Size as Size
 import Constant.Color as Color
 
-board : Html
-board =
+board : Map -> Html
+board map =
   svg
     [ width (toString Size.boardWidth)
     , height (toString Size.boardHeight)
