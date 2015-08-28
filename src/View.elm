@@ -73,13 +73,17 @@ title =
 hexagons : Map -> List Svg
 hexagons map =
   let pos = { x = Size.boardWidth / 2, y = Size.boardHeight / 2 }
-  in  List.map (\tile -> hexagon (getNeighbor pos tile.coords)) map.tiles
+  in  List.map (\tile -> hexagon tile.kind (getNeighbor pos tile.coords)) map.tiles
 
-hexagon : Position -> Svg
-hexagon position =
-  let hexagonPoints = toSvgPoints (corners position)
+hexagon : TileKind -> Position -> Svg
+hexagon kind position =
+  let
+    hexagonPoints = toSvgPoints (corners position)
+    bg = case kind of
+           Sand -> Color.sand
+           Rock -> Color.rock
   in  polygon
-        [ fill Color.sand
+        [ fill bg
         , points hexagonPoints
         ]
         []
