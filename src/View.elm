@@ -86,4 +86,10 @@ hexagon position =
 
 player : Position -> Svg
 player {x, y} =
-  circle [ cx (toString x) , cy (toString y), r "4", fill "black" ] [ ]
+  circle
+    [ cx (toString x)
+    , cy (toString y)
+    , r (toString Size.player)
+    , fill Color.player
+    ]
+    []
