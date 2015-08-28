@@ -1,6 +1,7 @@
 module Model
   ( Map
   , Tile
+  , TileKind (..)
   , map
   ) where
 

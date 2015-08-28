@@ -22,10 +22,33 @@ board map =
     [ width (toString Size.boardWidth)
     , height (toString Size.boardHeight)
     ]
-    [ background
+    [ appDefs
+    , background
     , title
-    , hexagon { x = 300, y = 200 }
+    , hexagon Sand { x = 300, y = 200 }
+    , player map.position
     ]
+
+appDefs : Svg
+appDefs =
+  defs [ ]
+    [ tilePattern "sandPattern" 360 360 "http://cdn.grid.fotosearch.com/CSP/CSP428/k4284340.jpg"
+    ]
+
+tilePattern : String -> Int -> Int -> String -> Svg
+tilePattern pid w h url =
+  pattern
+    [ id pid
+    , width (toString w), height (toString h)
+    , patternUnits "userSpaceOnUser"
+    ]
+    [ image
+      [ x "0", y "0"
+      , width (toString w), height (toString h)
+      , xlinkHref url
+      ] [ ]
+    ]
+
 
 background : Svg
 background =
@@ -46,11 +69,15 @@ title =
     ]
     [ text "Hackzagons" ]
 
-hexagon : Position -> Svg
-hexagon position =
+hexagon : TileKind -> Position -> Svg
+hexagon kind position =
   let hexagonPoints = toSvgPoints (corners position)
   in  polygon
         [ fill Color.sand
         , points hexagonPoints
         ]
         []
+
+player : Position -> Svg
+player {x, y} =
+  circle [ cx (toString x) , cy (toString y), r "4", fill "black" ] [ ]
