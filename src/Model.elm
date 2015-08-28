@@ -4,13 +4,16 @@ module Model
   , map
   ) where
 
+import Model.Position exposing (..)
+import Model.Coords exposing (..)
+
 type alias Map =
-  { position : (Float, Float)
+  { position : Position
   , tiles : List Tile
   }
 
 type alias Tile =
-  { coords : (Int, Int)
+  { coords : Coords
   , kind : TileKind
   }
 
@@ -18,28 +21,31 @@ type TileKind = Sand | Rock
 
 map : Map
 map =
-  { position = (200.0, 100.0)
+  { position =
+      { x = 200.0
+      , y = 100.0
+      }
   , tiles =
-      [ sandTile (0, 0)
-      , sandTile (-1, 0)
-      , sandTile (-2, 0)
-      , sandTile (-2, -1)
-      , sandTile (-2, 1)
-      , sandTile (-3, 1)
-      , rockTile (0, -1)
-      , rockTile (-1, -1)
-      , rockTile (0, -2)
-      , rockTile (1, -3)
+      [ sandTile { x =  0, y =  0 }
+      , sandTile { x = -1, y =  0 }
+      , sandTile { x = -2, y =  0 }
+      , sandTile { x = -2, y = -1 }
+      , sandTile { x = -2, y =  1 }
+      , sandTile { x = -3, y =  1 }
+      , rockTile { x =  0, y = -1 }
+      , rockTile { x = -1, y = -1 }
+      , rockTile { x =  0, y = -2 }
+      , rockTile { x =  1, y = -3 }
       ]
   }
 
-sandTile : (Int, Int) -> Tile
+sandTile : Coords -> Tile
 sandTile coords =
   { coords = coords
   , kind = Sand
   }
 
-rockTile : (Int, Int) -> Tile
+rockTile : Coords -> Tile
 rockTile coords =
   { coords = coords
   , kind = Rock
