@@ -72,7 +72,8 @@ title =
 
 hexagons : Map -> List Svg
 hexagons map =
-  List.map (\tile -> hexagon (getNeighbor map.position tile.coords)) map.tiles
+  let pos = { x = Size.boardWidth / 2, y = Size.boardHeight / 2 }
+  in  List.map (\tile -> hexagon (getNeighbor pos tile.coords)) map.tiles
 
 hexagon : Position -> Svg
 hexagon position =
