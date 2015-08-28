@@ -24,6 +24,12 @@ map =
       , sandTile (-1, 0)
       , sandTile (-2, 0)
       , sandTile (-2, -1)
+      , sandTile (-2, 1)
+      , sandTile (-3, 1)
+      , rockTile (0, -1)
+      , rockTile (-1, -1)
+      , rockTile (0, -2)
+      , rockTile (1, -3)
       ]
   }
 
@@ -31,4 +37,10 @@ sandTile : (Int, Int) -> Tile
 sandTile coords =
   { coords = coords
   , kind = Sand
+  }
+
+rockTile : (Int, Int) -> Tile
+rockTile coords =
+  { coords = coords
+  , kind = Rock
   }
