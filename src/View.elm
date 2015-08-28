@@ -13,6 +13,8 @@ import Constant.Color as Color
 
 import Model exposing (..)
 import Model.Position exposing (..)
+import Model.Hexagon exposing (..)
+import Model.Collision exposing (..)
 
 import View.Hexagon exposing (..)
 
@@ -72,16 +74,19 @@ title =
 
 hexagons : Map -> List Svg
 hexagons map =
-  let pos = { x = Size.boardWidth / 2, y = Size.boardHeight / 2 }
-  in  List.map (\tile -> hexagon tile.kind (getNeighbor pos tile.coords)) map.tiles
+  List.map (\tile -> hexagon map.position tile.kind (getTilePosition tile.coords)) map.tiles
 
-hexagon : TileKind -> Position -> Svg
-hexagon kind position =
-  let
-    hexagonPoints = toSvgPoints (corners position)
-    bg = case kind of
-           Sand -> Color.sand
-           Rock -> Color.rock
+hexagon : Position -> TileKind -> Position -> Svg
+hexagon playerPos kind tilePos =
+  let hexagonPoints = toSvgPoints (corners tilePos)
+      bg =
+        if playerTileCollision playerPos tilePos
+          then
+            Color.collisionTile
+          else
+            case kind of
+              Sand -> Color.sandTile
+              Rock -> Color.rockTile
   in  polygon
         [ fill bg
         , points hexagonPoints
@@ -93,7 +98,7 @@ player {x, y} =
   circle
     [ cx (toString x)
     , cy (toString y)
-    , r (toString Size.player)
+    , r (toString Size.playerRadius)
     , stroke "white"
     , strokeWidth "2"
     , fill Color.player
