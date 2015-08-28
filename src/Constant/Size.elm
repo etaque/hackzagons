@@ -1,7 +1,11 @@
 module Constant.Size where
 
-title = 30
 boardWidth = 1000
 boardHeight = 500
-hexagonRadius = 30
-player = 6
+
+tilesCenterX = boardWidth / 2
+tilesCenterY = boardHeight / 2
+
+title = 30
+tileRadius = 30
+playerRadius = 6
