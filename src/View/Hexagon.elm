@@ -31,6 +31,7 @@ toSvgPoints points =
 
 getNeighbor : Position -> Coords -> Position
 getNeighbor center coords =
-  { x = center.x + 2 * hexagonRadius * (toFloat(coords.x) + toFloat(coords.y) * cos(degrees 60.0))
-  , y = center.y + 2 * hexagonRadius * toFloat(coords.y) * sin(degrees 60.0)
-  }
+  let dist = 1.75 * hexagonRadius
+  in  { x = center.x + dist * (toFloat(coords.x) + toFloat(coords.y) * cos(degrees 60.0))
+      , y = center.y + dist * toFloat(coords.y) * sin(degrees 60.0)
+      }
