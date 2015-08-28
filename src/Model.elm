@@ -37,6 +37,16 @@ initialMap =
       , rockTile { x = -1, y = -1 }
       , rockTile { x =  0, y = -2 }
       , rockTile { x =  1, y = -3 }
+      , sandTile { x = 2, y = -3 }
+      , sandTile { x = 1, y = -2 }
+      , sandTile { x = 1, y = -1 }
+      , sandTile { x = 0, y = -3 }
+      , sandTile { x = 1, y = -4 }
+      , sandTile { x = 2, y = -4 }
+      , sandTile { x = -1, y = -2 }
+      , rockTile { x = 2, y = 2 }
+      , sandTile { x = 3, y = 2 }
+      , sandTile { x = 2, y = 3 }
       ]
   }
 
