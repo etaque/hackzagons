@@ -22,12 +22,13 @@ board map =
     [ width (toString Size.boardWidth)
     , height (toString Size.boardHeight)
     ]
-    [ appDefs
-    , background
-    , title
-    , hexagon Sand { x = 300, y = 200 }
-    , player map.position
-    ]
+    (  [ appDefs
+       , background
+       , title
+       , player map.position
+       ]
+    ++ hexagons map
+    )
 
 appDefs : Svg
 appDefs =
@@ -69,8 +70,12 @@ title =
     ]
     [ text "Hackzagons" ]
 
-hexagon : TileKind -> Position -> Svg
-hexagon kind position =
+hexagons : Map -> List Svg
+hexagons map =
+  List.map (\tile -> hexagon (getNeighbor map.position tile.coords)) map.tiles
+
+hexagon : Position -> Svg
+hexagon position =
   let hexagonPoints = toSvgPoints (corners position)
   in  polygon
         [ fill Color.sand

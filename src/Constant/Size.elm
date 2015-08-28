@@ -3,4 +3,4 @@ module Constant.Size where
 title = 30
 boardWidth = 640
 boardHeight = 640
-hexagonSize = 80
+hexagonRadius = 20
