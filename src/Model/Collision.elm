@@ -47,6 +47,7 @@ playerTileExactCollision p segments =
     Nothing ->
       False
 
+-- Ref: http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
 distPointSegment : Position -> (Position, Position) -> Float
 distPointSegment p (v, w) =
   let l2 = squaredDistance v w
