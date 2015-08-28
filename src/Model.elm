@@ -2,7 +2,7 @@ module Model
   ( Map
   , Tile
   , TileKind (..)
-  , map
+  , initialMap
   ) where
 
 import Model.Position exposing (..)
@@ -20,8 +20,8 @@ type alias Tile =
 
 type TileKind = Sand | Rock
 
-map : Map
-map =
+initialMap : Map
+initialMap =
   { position =
       { x = 200.0
       , y = 100.0
