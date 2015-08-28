@@ -23,7 +23,7 @@ type TileKind = Sand | Rock
 initialMap : Map
 initialMap =
   { position =
-      { x = 100.0
+      { x = 300.0
       , y = 250.0
       }
   , tiles =
