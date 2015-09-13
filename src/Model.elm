@@ -5,12 +5,11 @@ import Dict exposing (Dict)
 import Constant.Size exposing (..)
 import Constant.Color exposing (..)
 
-
-type alias Map =
-  { position : Point
-  , coords : Coords
+type alias Model =
+  { center : Point
   , dims : (Int, Int)
   , grid : Grid
+  , mode : Mode
   }
 
 type alias Grid = Dict Int GridRow
@@ -21,19 +20,23 @@ type alias Tile =
   , coords : Coords
   }
 
-type TileKind = Sand | Rock
+type TileKind = Water | Sand | Rock
 
 type alias Coords = (Int, Int)
 type alias Point = (Float, Float)
 
 type alias Cube number = (number, number, number)
 
+type Mode
+  = CreateTile TileKind
+  | Erase
+  | Watch
 
-initialMap : Map
-initialMap =
-  { position = (0, 0)
-  , coords = (0, 0)
+initialModel : Model
+initialModel =
+  { center = (0, 0)
   , dims = (800, 600)
+  , mode = CreateTile Water
   , grid = Dict.fromList
     [ (0, Dict.fromList
         [ (1, Sand)
@@ -71,6 +74,18 @@ createTile kind (i,j) grid =
           Dict.singleton j kind
   in
     Dict.insert i (updateRow (Dict.get i grid)) grid
+
+deleteTile : Coords -> Grid -> Grid
+deleteTile (i, j) grid =
+  let
+    deleteInRow maybeRow =
+      case maybeRow of
+        Just row ->
+          Dict.remove j row
+        Nothing ->
+          Dict.empty
+  in
+    Dict.insert i (deleteInRow (Dict.get i grid)) grid
 
 
 hexCoordsToPoint : Coords -> Point
@@ -135,4 +150,7 @@ getTilesList grid =
     List.map mapRow rows
       |> List.concat
 
+toPoint : (Int, Int) -> Point
+toPoint (x, y) =
+  (toFloat x, toFloat y)
 

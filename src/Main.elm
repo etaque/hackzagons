@@ -4,21 +4,32 @@ module Main
 
 import Html exposing (Html)
 import Signal
+import Keyboard
 import Time exposing (fps)
 import DragAndDrop exposing (mouseEvents)
 
-import Model exposing (Map, initialMap)
+import Model exposing (..)
 import Inputs exposing (..)
-import Update exposing (update)
+import Update exposing (update, Action(..))
 
-import View exposing (board)
+import View exposing (render)
 
 
--- sampledInput : Signal Input
--- sampledInput = Signal.sampleOn (fps 60) input
+actions : Signal Action
+actions =
+  Signal.mergeMany
+    [ Signal.map MouseAction mouseEvents
+    , Signal.map UpdateDims dims
+    , Signal.map (\b -> if b then NextTileKind else NoOp) Keyboard.space
+    , Signal.map (\b -> if b then EscapeMode else NoOp) (Keyboard.isDown 27)
+    ]
 
-mapState : Signal Map
-mapState = Signal.foldp update initialMap input
+state : Signal Model
+state = Signal.foldp update initialModel actions
 
 main : Signal Html
-main = Signal.map board mapState
+main = Signal.map render state
+
+-- port grid : Signal Grid
+-- port grid =
+--   Signal.map .grid state

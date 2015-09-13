@@ -15,41 +15,38 @@ import Model exposing (..)
 import View.Hexagon as Hexagon
 
 
-board : Map -> Html
-board map =
-  lazy renderBoard map
-
-renderBoard : Map -> Html
-renderBoard map =
+render : Model -> Html
+render model =
   svg
     [ width "100%"
     , height "100%"
+    , fill "black"
     ]
-    [ renderTiles map.coords map.grid
-    , player map.position
+    [ renderTiles model
+    -- , player model.center
+    , renderMode model.mode
     ]
 
-renderTiles : Coords -> Grid -> Svg
-renderTiles playerCoords grid =
+renderTiles : Model -> Svg
+renderTiles {grid, dims, center} =
   let
-    tiles = List.map (renderTile playerCoords) (getTilesList grid)
+    tiles = List.map renderTile (getTilesList grid)
+    (w, h) = toPoint dims
+    cx = w / 2 + fst center
+    cy = h / 2 + snd center
   in
-    g [] tiles
+    g [ transform ("translate(" ++ toString cx ++ ", " ++ toString cy ++ ")")] tiles
 
-renderTile : Coords -> Tile -> Svg
-renderTile playerCoords {kind, coords} =
+renderTile : Tile -> Svg
+renderTile {kind, coords} =
   let
     (x,y) = hexCoordsToPoint coords
-    playerTile = playerCoords == coords
-    color = case kind of
-      Sand -> Color.sandTile
-      Rock -> Color.rockTile
+    color = tileKindColor kind
     hex = polygon
       [ points Hexagon.verticesPoints
       , fill color
       , stroke color
       , strokeWidth "1"
-      , opacity (if playerTile then "0.5" else "1")
       ]
       []
     label = text'
@@ -62,14 +59,46 @@ renderTile playerCoords {kind, coords} =
     g [ transform ("translate(" ++ toString x ++ ", " ++ toString y ++ ")") ]
       [ hex ]
 
-player : Point -> Svg
-player (x, y) =
-  circle
-    [ cx (toString x)
-    , cy (toString y)
-    , r (toString Size.playerRadius)
-    , stroke "white"
-    , strokeWidth "2"
-    , fill Color.player
-    ]
-    []
+tileKindColor : TileKind -> String
+tileKindColor kind =
+  case kind of
+    Water -> Color.water
+    Sand -> Color.sand
+    Rock -> Color.rock
+
+renderMode : Mode -> Svg
+renderMode mode =
+  let
+    color =
+      case mode of
+        CreateTile kind ->
+          tileKindColor kind
+        Erase ->
+          Color.grass
+        Watch ->
+          "white"
+  in
+    circle
+      [ r "20"
+      , fill color
+      , stroke "white"
+      , strokeWidth "2"
+      , cx "50"
+      , cy "50"
+      ]
+      []
+
+
+
+
+-- player : Point -> Svg
+-- player (x, y) =
+--   circle
+--     [ cx (toString x)
+--     , cy (toString y)
+--     , r (toString Size.playerRadius)
+--     , stroke "white"
+--     , strokeWidth "2"
+--     , fill Color.player
+--     ]
+--     []
