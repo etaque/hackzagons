@@ -1,5 +1,8 @@
 module Constant.Color where
 
+water = "rgb(147,202,223)"
+sand = "rgb(242, 243, 196)"
+
 background = "rgb(147,202,223)"
 title = "rgb(255, 255, 255)"
 sandTile = "rgb(242, 243, 196)"

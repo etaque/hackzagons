@@ -1,104 +1,69 @@
-module View
-  ( board
-  ) where
+module View where
 
 import Html exposing (Html)
+import Html.Lazy exposing (lazy)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import List
 import String
+import Dict
 
 import Constant.Size as Size
 import Constant.Color as Color
 
 import Model exposing (..)
-import Model.Position exposing (..)
-import Model.Hexagon exposing (..)
-import Model.Collision exposing (..)
+import View.Hexagon as Hexagon
 
-import View.Hexagon exposing (..)
 
 board : Map -> Html
 board map =
+  lazy renderBoard map
+
+renderBoard : Map -> Html
+renderBoard map =
   svg
     [ width "100%"
     , height "100%"
     ]
-    (  [ appDefs
-       , title
-       ]
-    ++ hexagons map
-    ++ [ player map.position ]
-    )
-
-appDefs : Svg
-appDefs =
-  defs [ ]
-    [ tilePattern "sandPattern" 360 360 "http://cdn.grid.fotosearch.com/CSP/CSP428/k4284340.jpg"
+    [ renderTiles map.coords map.grid
+    , player map.position
     ]
 
-tilePattern : String -> Int -> Int -> String -> Svg
-tilePattern pid w h url =
-  pattern
-    [ id pid
-    , width (toString w), height (toString h)
-    , patternUnits "userSpaceOnUser"
-    ]
-    [ image
-      [ x "0", y "0"
-      , width (toString w), height (toString h)
-      , xlinkHref url
-      ] [ ]
-    ]
+renderTiles : Coords -> Grid -> Svg
+renderTiles playerCoords grid =
+  let
+    tiles = List.map (renderTile playerCoords) (getTilesList grid)
+  in
+    g [] tiles
 
+renderTile : Coords -> Tile -> Svg
+renderTile playerCoords {kind, coords} =
+  let
+    (x,y) = hexCoordsToPoint coords
+    playerTile = playerCoords == coords
+    color = case kind of
+      Sand -> Color.sandTile
+      Rock -> Color.rockTile
+    hex = polygon
+      [ points Hexagon.verticesPoints
+      , fill color
+      , stroke color
+      , strokeWidth "0.5"
+      , opacity (if playerTile then "0.5" else "1")
+      ]
+      []
+    label = text'
+      [ fill "black"
+      , textAnchor "middle"
+      , fontSize "10px"
+      ]
+      [ text (toString coords) ]
+  in
+    g [ transform ("translate(" ++ toString x ++ ", " ++ toString y ++ ")") ]
+      [ hex, label ]
 
-background : (Int,Int) -> Svg
-background (w,h) =
-  rect
-    [ width (toString w)
-    , height (toString h)
-    , fill Color.background
-    ]
-    []
-
-title : Svg
-title =
-  text'
-    [ x "5"
-    , y (toString (Size.title + 5))
-    , fill Color.title
-    , fontSize (toString Size.title)
-    ]
-    [ text "Hackzagons" ]
-
-hexagons : Map -> List Svg
-hexagons map =
--- <<<<<<< HEAD
---   let pos = { x = (fst map.dims |> toFloat) / 2, y = (snd map.dims |> toFloat) / 2 }
---   in  List.map (\tile -> hexagon tile.kind (getNeighbor pos tile.coords)) map.tiles
--- =======
-  List.map (\tile -> hexagon map.position tile.kind (getTilePosition tile.coords)) map.tiles
--- >>>>>>> c6831a3d575b1d0a9605024c37648af2fcfd8465
-
-hexagon : Position -> TileKind -> Position -> Svg
-hexagon playerPos kind tilePos =
-  let hexagonPoints = toSvgPoints (corners tilePos)
-      bg =
-        if playerTileCollision playerPos tilePos
-          then
-            Color.collisionTile
-          else
-            case kind of
-              Sand -> Color.sandTile
-              Rock -> Color.rockTile
-  in  polygon
-        [ fill bg
-        , points hexagonPoints
-        ]
-        []
-
-player : Position -> Svg
-player {x, y} =
+player : Point -> Svg
+player (x, y) =
   circle
     [ cx (toString x)
     , cy (toString y)

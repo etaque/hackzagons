@@ -6,6 +6,9 @@ boardHeight = 500
 tilesCenterX = boardWidth / 2
 tilesCenterY = boardHeight / 2
 
-title = 30
-tileRadius = 30
 playerRadius = 6
+
+hexRadius = 30
+hexHeight = hexRadius * 2
+hexWidth = (sqrt 3) / 2 * hexHeight
+hexDims = (hexWidth, hexHeight)

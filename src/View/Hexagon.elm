@@ -1,28 +1,39 @@
-module View.Hexagon
-  ( corners
-  , toSvgPoints
-  ) where
+module View.Hexagon where
 
 import List
 import String
 
-import Model.Position exposing (..)
+import Svg exposing (..)
+import Svg.Attributes exposing (..)
 
-import Constant.Size exposing (tileRadius)
+import Model exposing (..)
 
-corners : Position -> List Position
-corners center =
-  List.map (corner center) [0..5]
+import Constant.Size as Size
+import Constant.Color as Color
 
-corner : Position -> Int -> Position
-corner center i =
-  let angle = degrees (60 * toFloat(i) + 30)
-  in  { x = center.x + tileRadius * (cos angle)
-      , y = center.y + tileRadius * (sin angle)
-      }
 
-toSvgPoints : List Position -> String
+verticesPoints : String
+verticesPoints =
+  toSvgPoints vertices
+
+vertices : List Point
+vertices =
+  let
+    (w,h) = Size.hexDims
+    w2 = w / 2
+    h2 = h / 2
+    h4 = h / 4
+  in
+    [ (-w2, -h4)
+    , (0, -h2)
+    , (w2, -h4)
+    , (w2, h4)
+    , (0, h2)
+    , (-w2, h4)
+    ]
+
+toSvgPoints : List Point -> String
 toSvgPoints points =
   points
-    |> List.map (\{x, y} -> (toString x) ++ "," ++ (toString y))
+    |> List.map (\(x, y) -> toString x ++ "," ++ toString y)
     |> String.join " "
