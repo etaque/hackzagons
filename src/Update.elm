@@ -1,21 +1,35 @@
 module Update where
 
+import Maybe
+
 import Inputs exposing (..)
 import Model exposing (..)
 
 import Constant.Size as Size
 
+import DragAndDrop exposing (MouseEvent(..))
+
 
 update : Input -> Map -> Map
-update {arrows,dims} map =
+update {mouseEvent,dims} map =
   let
-    newPosition = updatePosition arrows map.position
-    newCoords = pointToHexCoords newPosition
+    draggedPoint =
+      case mouseEvent of
+        StartAt p -> Just p
+        MoveFromTo p _ -> Just p
+        EndAt _ -> Nothing
+    coords = Maybe.map (toPoint >> pointToHexCoords) draggedPoint
+    newGrid = Maybe.map (\c -> createTile Sand c map.grid) coords
+      |> Maybe.withDefault map.grid
   in
-    { map | position <- newPosition, coords <- newCoords, dims <- dims }
+    { map | grid <- newGrid, dims <- dims }
 
-updatePosition : Arrows -> Point -> Point
-updatePosition a (x, y) =
-  ( clamp Size.playerRadius (Size.boardWidth - Size.playerRadius) (x + 2 * (toFloat a.x))
-  , clamp Size.playerRadius (Size.boardHeight - Size.playerRadius) (y - 2 * (toFloat a.y))
-  )
+toPoint : (Int, Int) -> Point
+toPoint (x, y) =
+  (toFloat x, toFloat y)
+
+-- updatePosition : Arrows -> Point -> Point
+-- updatePosition a (x, y) =
+--   ( clamp Size.playerRadius (Size.boardWidth - Size.playerRadius) (x + 2 * (toFloat a.x))
+--   , clamp Size.playerRadius (Size.boardHeight - Size.playerRadius) (y - 2 * (toFloat a.y))
+--   )

@@ -48,7 +48,7 @@ renderTile playerCoords {kind, coords} =
       [ points Hexagon.verticesPoints
       , fill color
       , stroke color
-      , strokeWidth "0.5"
+      , strokeWidth "1"
       , opacity (if playerTile then "0.5" else "1")
       ]
       []
@@ -60,7 +60,7 @@ renderTile playerCoords {kind, coords} =
       [ text (toString coords) ]
   in
     g [ transform ("translate(" ++ toString x ++ ", " ++ toString y ++ ")") ]
-      [ hex, label ]
+      [ hex ]
 
 player : Point -> Svg
 player (x, y) =

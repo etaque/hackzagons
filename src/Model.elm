@@ -13,7 +13,8 @@ type alias Map =
   , grid : Grid
   }
 
-type alias Grid = Dict Int (Dict Int TileKind)
+type alias Grid = Dict Int GridRow
+type alias GridRow = Dict Int TileKind
 
 type alias Tile =
   { kind : TileKind
@@ -56,6 +57,21 @@ initialMap =
       )
     ]
   }
+
+
+createTile : TileKind -> Coords -> Grid -> Grid
+createTile kind (i,j) grid =
+  let
+    updateRow : Maybe GridRow -> GridRow
+    updateRow maybeRow =
+      case maybeRow of
+        Just row ->
+          Dict.insert j kind row
+        Nothing ->
+          Dict.singleton j kind
+  in
+    Dict.insert i (updateRow (Dict.get i grid)) grid
+
 
 hexCoordsToPoint : Coords -> Point
 hexCoordsToPoint (i, j) =
@@ -104,11 +120,11 @@ hexToCube (i, j) =
 getTilesList : Grid -> List Tile
 getTilesList grid =
   let
-    rows : List (Int, Dict Int TileKind)
+    rows : List (Int, GridRow)
     rows =
       Dict.toList grid
 
-    mapRow : (Int, Dict Int TileKind) -> List Tile
+    mapRow : (Int, GridRow) -> List Tile
     mapRow (i, row) =
       List.map (mapTile i) (Dict.toList row)
 
