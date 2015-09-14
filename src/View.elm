@@ -81,7 +81,7 @@ renderMode mode =
     circle
       [ r "20"
       , fill color
-      , stroke "white"
+      , stroke "black"
       , strokeWidth "2"
       , cx "50"
       , cy "50"

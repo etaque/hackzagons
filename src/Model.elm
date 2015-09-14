@@ -37,28 +37,7 @@ initialModel =
   { center = (0, 0)
   , dims = (800, 600)
   , mode = CreateTile Water
-  , grid = Dict.fromList
-    [ (0, Dict.fromList
-        [ (1, Sand)
-        , (2, Rock)
-        , (3, Sand)
-        , (5, Sand)
-        ]
-      )
-    , (1, Dict.fromList
-        [ (2, Sand)
-        , (3, Rock)
-        , (4, Sand)
-        ]
-      )
-    , (2, Dict.fromList
-        [ (1, Sand)
-        , (2, Sand)
-        , (3, Sand)
-        , (4, Sand)
-        ]
-      )
-    ]
+  , grid = Dict.empty
   }
 
 
